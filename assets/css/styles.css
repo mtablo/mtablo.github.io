@@ -303,6 +303,21 @@ h3 {
   gap: 14px;
 }
 
+.publication-subsection {
+  margin-top: 34px;
+}
+
+.publication-subsection.is-first {
+  margin-top: 0;
+}
+
+.subsection-title {
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 0.96rem;
+  font-weight: 800;
+}
+
 .publication-card {
   display: grid;
   grid-template-columns: 132px minmax(0, 1fr);
@@ -359,6 +374,10 @@ h3 {
 
 .compact .publication-card {
   background: rgba(255, 255, 255, 0.74);
+}
+
+.additional-publications .publication-card {
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .timeline-item {
@@ -490,8 +509,17 @@ h3 {
     font-size: 0.86rem;
   }
 
-  .button {
+  .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .hero-actions .button {
+    min-width: 0;
     width: 100%;
+    padding-inline: 12px;
+    white-space: nowrap;
   }
 
   .profile-panel,
@@ -503,5 +531,12 @@ h3 {
   .footer-inner {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-actions .button {
+    padding-inline: 8px;
+    font-size: 0.94rem;
   }
 }
