@@ -5,30 +5,54 @@ if (year) {
 }
 
 const navLinks = Array.from(document.querySelectorAll(".site-nav a"));
-const sections = navLinks
-  .map((link) => document.querySelector(link.getAttribute("href")))
+const navSections = navLinks
+  .map((link) => {
+    const section = document.querySelector(link.getAttribute("href"));
+
+    return section ? { link, section } : null;
+  })
   .filter(Boolean);
 
-if ("IntersectionObserver" in window && sections.length > 0) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+if (navSections.length > 0) {
+  let ticking = false;
 
-      if (!visible) {
-        return;
+  const updateActiveNav = () => {
+    const marker = Math.min(window.innerHeight * 0.38, 340);
+    const nearPageBottom =
+      window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    const activeItem = nearPageBottom
+      ? navSections[navSections.length - 1]
+      : navSections.find(({ section }) => {
+          const rect = section.getBoundingClientRect();
+
+          return rect.top <= marker && rect.bottom > marker;
+        });
+
+    navSections.forEach(({ link }) => {
+      const isActive = link === activeItem?.link;
+
+      link.classList.toggle("is-active", isActive);
+
+      if (isActive) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
       }
+    });
 
-      navLinks.forEach((link) => {
-        link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`);
-      });
-    },
-    {
-      rootMargin: "-28% 0px -58% 0px",
-      threshold: [0.12, 0.32, 0.6],
-    },
-  );
+    ticking = false;
+  };
 
-  sections.forEach((section) => observer.observe(section));
+  const requestActiveNavUpdate = () => {
+    if (ticking) {
+      return;
+    }
+
+    ticking = true;
+    window.requestAnimationFrame(updateActiveNav);
+  };
+
+  updateActiveNav();
+  window.addEventListener("scroll", requestActiveNavUpdate, { passive: true });
+  window.addEventListener("resize", requestActiveNavUpdate);
 }

@@ -63,6 +63,10 @@ img {
   margin: 0 auto;
 }
 
+main > section[id] {
+  scroll-margin-top: 28px;
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -453,6 +457,12 @@ h3 {
   .hero {
     min-height: auto;
     padding: 72px 0 88px;
+  }
+}
+
+@media (min-width: 821px) {
+  main > section[id] {
+    scroll-margin-top: 96px;
   }
 }
 
