@@ -151,6 +151,10 @@ main > section[id] {
   letter-spacing: 0;
 }
 
+.publication-meta .mixed-case {
+  text-transform: none;
+}
+
 h1,
 h2,
 h3,
